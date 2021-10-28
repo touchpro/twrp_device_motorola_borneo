@@ -1,0 +1,36 @@
+# Android fstab file.
+# The filesystem that contains the filesystem checker binary (typically /system) cannot
+# specify MF_CHECK, and must come before any filesystems that do specify MF_CHECK
+
+# mount point    fstype     device                 device2                        flags
+/boot              emmc       /dev/block/bootdevice/by-name/boot                    flags=slotselect
+/recovery          emmc       /dev/block/bootdevice/by-name/recovery                flags=backup=1;slotselect;flashimg=1
+/dtbo              emmc       /dev/block/bootdevice/by-name/dtbo                    flags=backup=1;display="Dtbo";slotselect;flashimg=1
+/vbmeta            emmc       /dev/block/bootdevice/by-name/vbmeta                  flags=backup=1;display="VBMeta";slotselect;flashimg=1
+/data              f2fs       /dev/block/bootdevice/by-name/userdata                flags=fileencryption=ice:aes-256-cts
+/misc              emmc       /dev/block/bootdevice/by-name/misc
+
+# Persist
+/persist	   ext4      /dev/block/bootdevice/by-name/persist		    flags=display="Persist";backup=1
+/prodpersist	   ext4      /dev/block/bootdevice/by-name/prodpersist		    flags=display="ProdPersist";backup=1
+/metadata          ext4      /dev/block/bootdevice/by-name/metadata                 flags=display="Metadata";
+/modem             emmc      /dev/block/bootdevice/by-name/modem                    flags=backup=1;display="Modem";slotselect
+/boot              emmc      /dev/block/bootdevice/by-name/boot                     flags=display="Boot";backup=1;flashimg=1;
+/firmware	   ext4      /dev/block/bootdevice/by-name/modem		    flags=display="Firmware";slotselect;mounttodecrypt;fsflags="ro,shortname=lower,uid=1000,gid=1000,dmask=227,fmask=337,context=u:object_r:firmware_file:s0"
+/bt_firmware	   ext4      /dev/block/bootdevice/by-name/bluetooth		    flags=display="Bluetooth";slotselect
+/bluetooth         emmc      /dev/block/bootdevice/by-name/bluetooth                flags=backup=1;display="Bluetooth";slotselect
+/fsg		   emmc      /dev/block/bootdevice/by-name/fsg			    flags=display="FSG";backup=1;slotselect
+/dsp		   ext4      /dev/block/bootdevice/by-name/dsp			    flags=display="DSP";backup=1;slotselect
+/super             emmc      /dev/block/bootdevice/by-name/super                    flags=backup=1;display="Super";flashimg=1
+/keymaster         emmc      /dev/block/bootdevice/by-name/keymaster                flags=slotselect
+/logo              emmc      /dev/block/bootdevice/by-name/logo                     flags=backup=1;display="Boot Logo";slotselect;flashimg=1
+
+# Removable storage
+/external_sd       auto      /dev/block/mmcblk1p1  /dev/block/mmcblk1               flags=display="MicroSD Card";storage;wipeingui;removable
+/usb_otg	   auto      /dev/block/sda1	    /dev/block/sda		    flags=display="USB-OTG";storage;wipeingui;removable			
+
+# Dynamic Partitions
+system             ext4      /system                                                display="System"
+vendor             ext4      /vendor                                                display="Vendor"
+product            ext4      /product                                               display="Product"
+
