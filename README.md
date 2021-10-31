@@ -30,7 +30,7 @@ not yet
 ```sh
 . build/envsetup.sh
 export LC_ALL=C
-lunch omni_borneo-eng
+lunch twrp_borneo-eng
 mka -jX clobber && mka -jX recoveryimage
 ```
 Note: 'X' in `mka -jX recoveryimage` is the number of cores your processor has.

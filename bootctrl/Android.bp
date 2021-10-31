@@ -14,12 +14,15 @@
 // limitations under the License.
 //
 
-soong_namespace {
-    imports: ["hardware/qcom/bootctrl"],
-}
-
 cc_library {
     name: "bootctrl.bengal",
     defaults: ["bootctrl_hal_defaults"],
-    static_libs: ["libgptutils"],
+    static_libs: ["libgptutils.motorola_bengal"],
+}
+
+cc_library_shared {
+    name: "android.hardware.boot@1.1-impl-qti",
+    stem: "android.hardware.boot@1.0-impl-1.1-qti",
+    defaults: ["android.hardware.boot@1.1-impl-qti_defaults"],
+    static_libs: ["libgptutils.motorola_bengal"],
 }

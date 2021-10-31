@@ -38,13 +38,15 @@ TARGET_ARCH := arm64
 TARGET_ARCH_VARIANT := armv8-a
 TARGET_CPU_ABI := arm64-v8a
 TARGET_CPU_ABI2 :=
-TARGET_CPU_VARIANT := kryo
+TARGET_CPU_VARIANT := generic
+TARGET_CPU_VARIANT_RUNTIME := kryo260
 
 TARGET_2ND_ARCH := arm
 TARGET_2ND_ARCH_VARIANT := armv8-a
 TARGET_2ND_CPU_ABI := armeabi-v7a
 TARGET_2ND_CPU_ABI2 := armeabi
-TARGET_2ND_CPU_VARIANT := cortex-a73
+TARGET_2ND_CPU_VARIANT := generic
+TARGET_2ND_CPU_VARIANT_RUNTIME := kryo260
 TARGET_BOARD_SUFFIX := _64
 
 # Enable CPUSets
@@ -64,28 +66,24 @@ BOARD_KERNEL_CMDLINE := console=ttyMSM0,115200n8 \
 			video=vfb:640x400,bpp=32,memsize=3072000 \
 			msm_rtb.filter=0x237\
 			service_locator.enable=1 \
+			loop.maxpart=7 \
 			swiotlb=2048 \
-			loop.max_part=7 \
-			androidboot.hab.csv=3 \
-			androidboot.hab.product=borneo \
-			androidboot.hab.cid=50 \
 			firmware_class.path=/vendor/firmware_mnt/image
 # For the love of all that is holy, please do not include this in your ROM unless you really want TWRP to not work correctly!
 BOARD_KERNEL_CMDLINE += androidboot.fastboot=1
 BOARD_KERNEL_CMDLINE += androidboot.selinux=permissive
 
 BOARD_BOOTIMG_HEADER_VERSION := 2
-BOARD_KERNEL_PAGESIZE := 	4096
-BOARD_KERNEL_BASE := 		0x00000000
-BOARD_KERNEL_OFFSET := 		0x00008000
-BOARD_RAMDISK_OFFSET := 	0x01000000
-BOARD_KERNEL_SECOND_OFFSET := 	0x00f00000
-BOARD_KERNEL_TAGS_OFFSET := 	0x00000100
-BOARD_DTB_OFFSET := 		0x01f00000
-BOARD_DTBO_OFFSET := 		0x01246000
-# BOARD_KERNEL_SEPARATED_DTBO := true
+BOARD_KERNEL_PAGESIZE := 4096
+BOARD_KERNEL_BASE          := 0x00000000
+BOARD_KERNEL_OFFSET        := 0x00008000
+BOARD_RAMDISK_OFFSET       := 0x01000000
+BOARD_KERNEL_SECOND_OFFSET := 0x00000000
+BOARD_KERNEL_TAGS_OFFSET   := 0x00000100
+BOARD_DTB_OFFSET           := 0x01f00000
+#BOARD_KERNEL_SEPARATED_DTBO := true
 BOARD_INCLUDE_RECOVERY_DTBO := true
-BOARD_INCLUDE_DTB_IN_BOOTIMG := true
+#BOARD_INCLUDE_DTB_IN_BOOTIMG := true
 
 #TARGET_KERNEL_VERSION := 4.19
 #TARGET_KERNEL_CLANG_COMPILE := true
@@ -94,8 +92,6 @@ TARGET_KERNEL_ARCH := arm64
 TARGET_KERNEL_HEADER_ARCH := arm64
 #TARGET_KERNEL_SOURCE := kernel/motorola/borneo
 TARGET_KERNEL_CONFIG := borneo_defconfig
-#:= vendor/$(TARGET_PRODUCT)_defconfig
-
 
 BOARD_KERNEL_IMAGE_NAME := Image.gz
 TARGET_PREBUILT_KERNEL := $(DEVICE_PATH)/prebuilt/Image.gz
@@ -149,31 +145,14 @@ TARGET_USES_MKE2FS := true
 
 # Additional binaries & libraries needed for recovery
 TARGET_RECOVERY_DEVICE_MODULES += \
-    android.hidl.base@1.0 \
-    ashmemd \
-    ashmemd_aidl_interface-cpp \
-    libashmemd_client \
+    libandroidicu \
     libcap \
-    libicui18n \
-    libicuuc \
     libion \
-    libpcrecpp \
-    libprocinfo \
     libxml2
 
-TW_RECOVERY_ADDITIONAL_RELINK_BINARY_FILES += \
-    $(TARGET_OUT_EXECUTABLES)/ashmemd
-
 TW_RECOVERY_ADDITIONAL_RELINK_LIBRARY_FILES += \
-    $(TARGET_OUT_SHARED_LIBRARIES)/android.hidl.base@1.0.so \
-    $(TARGET_OUT_SHARED_LIBRARIES)/ashmemd_aidl_interface-cpp.so \
-    $(TARGET_OUT_SHARED_LIBRARIES)/libashmemd_client.so \
     $(TARGET_OUT_SHARED_LIBRARIES)/libcap.so \
-    $(TARGET_OUT_SHARED_LIBRARIES)/libicui18n.so \
-    $(TARGET_OUT_SHARED_LIBRARIES)/libicuuc.so \
     $(TARGET_OUT_SHARED_LIBRARIES)/libion.so \
-    $(TARGET_OUT_SHARED_LIBRARIES)/libpcrecpp.so \
-    $(TARGET_OUT_SHARED_LIBRARIES)/libprocinfo.so \
     $(TARGET_OUT_SHARED_LIBRARIES)/libxml2.so
 
 # Avb
@@ -190,9 +169,9 @@ VENDOR_SECURITY_PATCH := 2099-12-31
 PLATFORM_VERSION := 16.1.0
 BOARD_USES_QCOM_FBE_DECRYPTION := true
 TW_INCLUDE_CRYPTO := true
-BOARD_ROOT_EXTRA_FOLDERS := bluetooth dsp firmware persist
 BOARD_USES_METADATA_PARTITION := true
 BOARD_SUPPRESS_SECURE_ERASE := true
+TW_USE_FSCRYPT_POLICY := 1
 
 # Installer
 #USE_RECOVERY_INSTALLER := true
@@ -203,7 +182,6 @@ TW_THEME := portrait_hdpi
 TW_EXTRA_LANGUAGES := true
 TW_SCREEN_BLANK_ON_BOOT := true
 TW_INPUT_BLACKLIST := "hbtp_vm"
-TW_USE_TOOLBOX := true
 RECOVERY_SDCARD_ON_DATA := true
 TARGET_RECOVERY_QCOM_RTC_FIX := true
 TW_BRIGHTNESS_PATH := "/sys/class/backlight/panel0-backlight/brightness"
@@ -226,6 +204,9 @@ TARGET_USES_LOGD := true
 BOARD_VENDORIMAGE_FILE_SYSTEM_TYPE := ext4
 TARGET_COPY_OUT_VENDOR := vendor
 TARGET_COPY_OUT_PRODUCT := product
+BOARD_PRODUCTIMAGE_FILE_SYSTEM_TYPE := ext4
 
+# Kernel module loading
+TW_LOAD_VENDOR_MODULES := "chipone_tddi_mmi.ko abov_sar_mmi_overlay.ko ilitek_0flash_mmi.ko exfat.ko fpc1020_mmi.ko ktd3136_bl.ko leds_aw99703.ko mmi_annotate.ko mmi_info.ko mmi_sys_temp.ko moto_f_usbnet.ko nova_0flash_mmi.ko qpnp_adaptive_charge.ko qpnp-power-on-mmi.ko sensors_class.ko utags.ko"
 # For building with minimal manifest
 ALLOW_MISSING_DEPENDENCIES := true

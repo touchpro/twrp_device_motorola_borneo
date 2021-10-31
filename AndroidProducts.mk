@@ -17,9 +17,9 @@
 #
 
 PRODUCT_MAKEFILES := \
-     $(LOCAL_DIR)/omni_borneo.mk
+    $(LOCAL_DIR)/twrp_borneo.mk
 
 COMMON_LUNCH_CHOICES := \
-    omni_borneo-user \
-    omni_borneo-userdebug \
-    omni_borneo-eng
+    twrp_borneo-user \
+    twrp_borneo-userdebug \
+    twrp_borneo-eng
