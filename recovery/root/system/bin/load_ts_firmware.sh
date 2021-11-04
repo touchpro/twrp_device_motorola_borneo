@@ -27,23 +27,21 @@ wait_for_poweron()
 	fi
 	return 0
 }
-insmod /vendor/lib/modules/1.1/ilitek_0flash_mmi.ko
 cd $firmware_path
 touch_product_string=$(ls $touch_class_path)
-if [[ -d /sys/class/touchscreen/ilitek ]]; then
-       echo "ilitek"
-       firmware_file="ilitek_fw.bin"
-       flash_path=/sys/class/touchscreen/ilitek/ioctl
-       echo $firmware_file > $flash_path
-elif [[ -d /sys/class/touchscreen/ft8006s_aa ]]; then
-        echo "focaltech"
-       firmware_file="focaltech-dsbj-ft8006s_aa-05-0000-cebu.bin"
+if [[ -d /sys/class/touchscreen/ft8006s_aa ]]; then
+       echo "focaltech"
+       firmware_file="focaltech-djnboe-ft8009_07-000-borneo.bin"
        touch_path=/sys$(cat $touch_class_path/$touch_product_string/path | awk '{print $1}')
        wait_for_poweron
        echo $firmware_file > $touch_path/doreflash
        echo 1 > $touch_path/forcereflash
        sleep 5
        echo 1 > $touch_path/reset
+elif [[ -d /sys/class/touchscreen/NVT-ts ]]; then
+        echo "novatek"
+        cfirmware_file="novatek_ts_fw.bin"
+        echo 1 > /proc/nvt_update
 fi
 
 return 0

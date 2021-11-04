@@ -207,6 +207,6 @@ TARGET_COPY_OUT_PRODUCT := product
 BOARD_PRODUCTIMAGE_FILE_SYSTEM_TYPE := ext4
 
 # Kernel module loading
-TW_LOAD_VENDOR_MODULES := "chipone_tddi_mmi.ko abov_sar_mmi_overlay.ko ilitek_0flash_mmi.ko exfat.ko fpc1020_mmi.ko ktd3136_bl.ko leds_aw99703.ko mmi_annotate.ko mmi_info.ko mmi_sys_temp.ko moto_f_usbnet.ko nova_0flash_mmi.ko qpnp_adaptive_charge.ko qpnp-power-on-mmi.ko sensors_class.ko utags.ko"
+TW_LOAD_VENDOR_MODULES := "chipone_tddi_mmi.ko abov_sar_mmi_overlay.ko ilitek_0flash_mmi.ko focaltech_0flash_mmi.ko exfat.ko fpc1020_mmi.ko ktd3136_bl.ko leds_aw99703.ko mmi_annotate.ko mmi_info.ko mmi_sys_temp.ko moto_f_usbnet.ko nova_0flash_mmi.ko qpnp_adaptive_charge.ko qpnp-power-on-mmi.ko sensors_class.ko utags.ko"
 # For building with minimal manifest
 ALLOW_MISSING_DEPENDENCIES := true

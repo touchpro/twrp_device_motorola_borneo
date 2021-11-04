@@ -29,6 +29,9 @@ import /init.recovery.qcom_decrypt.rc
 
 on boot
     start health-hal-2-1
+    insmod /vendor/lib/modules/1.1/focaltech_0flash_mmi.ko
+    insmod /vendor/lib/modules/1.1/nova_0flash_mmi.ko
+    start load_ts_firmware
 
 on fs
     wait /dev/block/platform/soc/${ro.boot.bootdevice}
@@ -41,3 +44,10 @@ on post-fs
 on property:ro.crypto.type=file
     setprop ro.crypto.state encrypted
     setprop twrp.apex.loaded true
+    
+service load_ts_firmware /system/bin/load_ts_firmware.sh
+    oneshot
+    user root
+    group root
+    disabled
+    seclabel u:r:recovery:s0
