@@ -31,7 +31,7 @@ cd $firmware_path
 touch_product_string=$(ls $touch_class_path)
 if [[ -d /sys/class/touchscreen/ft8009 ]]; then
        echo "focaltech"
-       firmware_file="focaltech-djnboe-ft8009_07-000-borneo.bin"
+       firmware_file="focaltech-djnboe-ft8009-07-000-borneo.bin"
        touch_path=/sys$(cat $touch_class_path/$touch_product_string/path | awk '{print $1}')
        wait_for_poweron
        echo $firmware_file > $touch_path/doreflash
